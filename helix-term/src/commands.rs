@@ -6558,7 +6558,7 @@ fn replay_macro(cx: &mut Context) {
 }
 
 fn goto_word(cx: &mut Context) {
-    jump_to_word(cx, Movement::Move)
+    jump_to_word(cx, Movement::Move);
 }
 
 fn extend_to_word(cx: &mut Context) {
@@ -6649,6 +6649,13 @@ fn jump_to_label(cx: &mut Context, labels: Vec<Range>, behaviour: Movement) {
                     range.with_direction(Direction::Forward)
                 };
                 doc_mut!(cx.editor, &doc).set_selection(view, range.into());
+
+                if behaviour != Movement::Extend {
+                    // Go back to the beginning of the word
+                    move_prev_word_start(cx);
+                    // Collapse selection
+                    collapse_selection(cx);
+                }
             }
         });
     });
