@@ -1,0 +1,88 @@
+# Check:
+# https://github.com/helix-editor/helix/wiki/Language-Server-Configurations
+# For specific language configuration
+
+[[language]]
+name = "javascript"
+indent = { tab-width = 4, unit = "    " }
+
+[[language]]
+name = "git-commit"
+language-servers = [{ name = "ltex"}]
+formatter = { command = "sed", args = ["s/[ \t]*$//"] }
+auto-format = true
+
+[[language]]
+name = "rust"
+language-servers = [ "rust-analyzer" ]
+formatter = { command = "rustfmt --edition 2024" }
+
+[[language]]
+name = "python"
+formatter = { command = "ruff", args=["format", "-"] }
+
+[[language]]
+name = "c"
+indent = { unit = "    ", tab-width = 4 }
+
+[[language]]
+name = "zig"
+file-types = ["zig", "zon"]
+
+[[language]]
+name = "go"
+auto-format = true
+
+[[language]]
+name = "markdown"
+language-servers = [{ name = "marksman"}, { name = "ltex"}]
+file-types = ["md"]
+formatter = { command = 'mdformat',  args = ["-"] }
+
+[[language]]
+name = "plain-text"
+language-servers = [{ name = "ltex"}]
+file-types = ["txt", "rst"]
+scope = "text.markdown"
+
+[[language]]
+name = "json"
+language-servers = [{ name = "vscode-language-server"}]
+formatter = { command = 'prettier', args = ["--parser", "json"] }
+
+[[language]]
+name = "jsonc"
+formatter = { command = 'prettier', args = ["--parser", "jsonc"] }
+
+[[language]]
+name = "bash"
+indent = { tab-width = 4, unit = "    " }
+formatter = { command = 'shfmt', args = ["-i", "4"] }
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+
+[[language]]
+name = "typst"
+language-servers = ["tinymist"]
+
+[language-server.tinymist]
+command = "tinymist"
+config = { preview.background.enabled = true, preview.background.args = ["--data-plane-host=127.0.0.1:23635", "--invert-colors=never", "--open"] }
+
+[language-server.ltex]
+command = "/opt/ltex-ls/bin/ltex-ls-plus"
+
+[language-server.vscode-json-language-server]
+command = "vscode-json-language-server"
+config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
+
+[language-server.yaml-language-server.config.yaml]
+format = { enable = true }
+validation = true
+
+[language-server.yaml-language-server.config.yaml.schemas]
+"https://json.schemastore.org/github-workflow.json" = ".github/workflows/*.{yml,yaml}"
+"https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json" = [".gitlab-ci.yml", ".gitlab-ci.yaml"] 
+
