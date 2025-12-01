@@ -1,0 +1,18 @@
+#!/bin/sh
+
+PREV_TMUX_COMMAND=`cat /tmp/prev-tmux-command`
+
+if [ -z "$PREV_TMUX_COMMAND" ]; then
+  return 0
+fi
+
+PANES=$(tmux list-panes | wc -l)
+# echo $PANES
+if [ "$PANES" -gt 1 ]
+  then
+    tmux send-keys -t 2 $PREV_TMUX_COMMAND Enter
+  else
+    tmux split-window -h
+    tmux send $PREV_TMUX_COMMAND Enter
+fi
+

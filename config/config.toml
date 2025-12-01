@@ -1,0 +1,155 @@
+theme = "catppuccin_mocha"
+
+[editor]
+bufferline = "always"
+auto-pairs = false
+insert-final-newline = true
+true-color = true
+
+[editor.lsp]
+# display-inlay-hints = true
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal.space]
+q = ":reflow"
+x = ":toggle whitespace.render all none"
+l = ":lsp-stop"
+L = ":lsp-restart"
+e = "goto_next_change"
+E = "goto_prev_change"
+f = "goto_next_diag"
+F = "goto_prev_diag"
+v = ":sh hemux-last"
+
+[keys.normal.space.space]
+# Tmux actions
+H = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w85%% -h80%% -E ~/.config/helix/serpl-replace.sh"
+q = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+v = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h" > /dev/tty',
+  ':vsplit %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+s = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h" > /dev/tty',
+  ':hsplit %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+d = ":sh tmux popup -d \"#{pane_current_path}\" -xC -yC -w85%% -h80%% -E 'git diff | diffnav'"
+g = [
+    ":write-all",
+    ":new",
+    ":insert-output lazygit",
+    ":buffer-close!",
+    ":redraw",
+    ":reload-all"
+]
+# Show blame info for current line
+b = ":sh git blame -L %{cursor_line},%{cursor_line} %{buffer_name}"
+
+[keys.normal.space.space.space]
+# Zellij
+H = ":sh zellij run -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/serpl-replace.sh"
+q = ":sh zellij run -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open" # Open the file(s) in the current window
+v = ":sh zellij run -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh vsplit" # Open the file(s) in a horizontal pane
+s = ":sh zellij run -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh hsplit" # Open the file(s) in a vertical pane
+d = ":sh zellij run -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash -c 'git diff | diffnav'" # diffnav
+g = ":sh zellij run -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash -c lazygit" # lazygit
+
+[keys.normal."'"]
+
+_ = "@ File Management\n"
+
+t = "@:sh touch <C-r>%"
+r = "@:sh rm <C-r>%"
+e = "@:sh mkdir <C-r>%"
+w = "@:sh mv <C-r>% <C-r>%"
+c = "@:sh cp <C-r>% <C-r>%"
+
+0 = ":x"
+
+[keys.normal."m"]
+"\"" = "@f\";vmmdi\""
+"'" = "@f';vmmdi'"
+"[" = "@f];vmmdi["
+"(" = "@f);vmmdi("
+"<"  = "@f<gt>;vmmdi<lt><gt><left>"
+"{" = "@f};vmmdi{"
+
+[editor.indent-guides]
+render = true
+character = "┊"
+
+[keys.select]
+# In select mode, ; is normally followed by escape to enter normal mode.
+# This saves a keypress!
+";" = ["collapse_selection", "normal_mode"]
+
+[keys.normal]
+# selects from the first non-whitespace to the end of the line
+V = ["goto_first_nonwhitespace", "extend_to_line_end"]
+# extends the selection to the end of the line, regardless of where the head/
+# anchor are
+D = ["ensure_selections_forward", "extend_to_line_end"]
+# Close buffer
+C-q = ":bclose"
+# x normally only extends down, but you can actually make it extend based on the
+# head of the selection
+x = "extend_line"
+# Make W behave the same as E
+W = "move_next_long_word_end"
+# Move to inside the previous parenthesis
+H = "@F)mi("
+# Move to inside the next parenthesis
+L = "@f(mi("
+# Move selected block up
+S-up = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]
+# Move selected block down
+S-down = ["extend_to_line_bounds", "delete_selection", "paste_after"]
+# Move through parameters
+C-left = "goto_prev_parameter"
+C-right = "goto_next_parameter"
+C-down = "page_cursor_half_down"
+C-up = "page_cursor_half_up"
+C-j = "page_cursor_half_down"
+C-k = "page_cursor_half_up"
+C-S-up = "scroll_up"
+C-S-down = "scroll_down"
+C-h = "goto_previous_buffer"
+C-l = "goto_next_buffer"
+C-p = "file_picker_in_current_directory" # rebound C-o from 'jump_backward'
+C-f = "jump_forward" # rebound C-f from 'page_down'
+C-b = "jump_backward" # rebound C-b from 'page_up'
+C-d = ["move_char_right", "move_prev_word_start", "move_next_word_end", "search_selection", "search_next"]
+# https://github.com/helix-editor/helix/issues/1481
+# C-S = [
+#     "save_selection",
+#     "select_all",
+#     # Delete trailing whitespace from end of each line
+#     ":pipe sed 's/[\t]*$//'",
+#     # Delete trailing blank lines (including whitespace) from end of the buffer
+#     #":pipe awk '/^\\s*$/ {b=b $0 \"\\n\"; next;} {printf \"%s\",b; b=\"\"; print;}'",
+#     #"collapse_selection",
+#     #"goto_last_line",
+#     #"add_newline_below",
+#     #"commit_undo_checkpoint",
+#     "jump_backward",
+#     #":write",
+# ]
+# Tmux alt+arrow incompatibility
+A-S-up = "expand_selection"
+A-S-down = "shrink_selection"
+A-S-left = "select_prev_sibling"
+A-S-right = "select_next_sibling"
