@@ -22,6 +22,7 @@ E = "goto_prev_change"
 f = "goto_next_diag"
 F = "goto_prev_diag"
 v = ":sh hemux-last"
+i = ":toggle lsp.display-inlay-hints"
 
 [keys.normal.space.space]
 # Tmux actions
