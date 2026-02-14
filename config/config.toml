@@ -21,8 +21,9 @@ e = "goto_next_change"
 E = "goto_prev_change"
 f = "goto_next_diag"
 F = "goto_prev_diag"
-v = ":sh hemux-last"
 i = ":toggle lsp.display-inlay-hints"
+v = "@<C-s>maf<A-;>t(be" # Go to function name. Save selection to jumplist first.
+V = "@<C-s>maf<A-;>t(begr" # Go to current function references. Save selection to jumplist first.
 
 [keys.normal.space.space]
 # Tmux actions
