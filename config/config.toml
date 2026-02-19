@@ -61,7 +61,7 @@ g = [
 j = [
     ":write-all",
     ":new",
-    ":insert-output lazyjj > /dev/tty",
+    ":insert-output jjui > /dev/tty",
     ":buffer-close!",
     ":redraw",
     ":reload-all"
