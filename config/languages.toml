@@ -17,6 +17,14 @@ name = "rust"
 language-servers = [ "rust-analyzer" ]
 formatter = { command = "rustfmt --edition 2024" }
 
+[language-server.rust-analyzer.config]
+check.command = "clippy"
+check.extra_args = ["--", "-W", "clippy::pedantic", "-W", "clippy::nursery", "-W", "clippy::restriction"]
+
+[[language]]
+name = "nix"
+formatter = { command = "nixfmt" }
+
 [[language]]
 name = "python"
 formatter = { command = "ruff", args=["format", "-"] }
